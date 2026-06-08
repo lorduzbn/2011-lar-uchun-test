@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>8-Sinf Bilim Sinovi</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #fff6f6;
+      --card: rgba(255,255,255,0.92);
+      --card-2: rgba(255,255,255,0.78);
+      --text: #191919;
+      --muted: #6b6b6b;
+      --red: #e53935;
+      --red-2: #ff5b57;
+      --border: rgba(229,57,53,0.16);
+      --shadow: 0 16px 40px rgba(0,0,0,0.18);
+      --shadow-soft: 0 8px 24px rgba(0,0,0,0.12);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --maxw: 460px;
+      --transition: 260ms cubic-bezier(.2,.8,.2,1);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; width: 100%; min-height: 100%; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(229,57,53,0.14), transparent 42%),
+        linear-gradient(180deg, #fff 0%, #fff8f8 52%, #fff 100%);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    .app {
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 16px 14px 20px;
+    }
+
+    .screen {
+      display: none;
+      animation: fadeUp .45s ease both;
+    }
+    .screen.active { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.85)),
+        url('Maktab.jpg') center/cover no-repeat;
+      border: 1px solid rgba(0,0,0,0.05);
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 28px 18px 18px;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.88));
+      backdrop-filter: blur(7px);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      animation: introPop 1s cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    @keyframes introPop {
+      0% { opacity: 0; transform: scale(0.94) translateY(14px); }
+      60% { opacity: 1; transform: scale(1.02) translateY(0); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .logo-wrap {
+      width: 122px;
+      height: 122px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 16px 32px rgba(0,0,0,0.18), 0 0 0 5px rgba(229,57,53,0.12);
+      border: 2px solid rgba(229,57,53,0.18);
+      transform: translateY(0);
+      animation: floaty 3.6s ease-in-out infinite;
+    }
+
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .logo-wrap img, .author-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .brand {
+      font-size: 1.5rem;
+      line-height: 1.18;
+      font-weight: 900;
+      color: var(--red);
+      text-shadow: 0 2px 0 rgba(0,0,0,0.08), 0 6px 14px rgba(0,0,0,0.13);
+      letter-spacing: 0.2px;
+      margin: 0;
+    }
+
+    .subtitle {
+      font-size: 0.98rem;
+      line-height: 1.55;
+      color: #3e3e3e;
+      margin: 0;
+      max-width: 32ch;
+    }
+
+    .author-line {
+      margin-top: 8px;
+      font-size: 0.92rem;
+      color: #444;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+    }
+
+    .author-line strong {
+      color: #c51f1a;
+      font-size: 1.05rem;
+      display: inline-block;
+      margin-top: 6px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      width: 100%;
+      min-height: 54px;
+      padding: 14px 18px;
+      border-radius: 18px;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: .2px;
+      color: #fff;
+      background: linear-gradient(135deg, #ff615d, #db2222);
+      box-shadow: 0 14px 22px rgba(229,57,53,0.28), 0 8px 20px rgba(0,0,0,0.14);
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn:hover { filter: brightness(1.03); }
+
+    .btn.secondary {
+      background: #fff;
+      color: var(--red);
+      border: 1px solid rgba(229,57,53,0.22);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.10);
+    }
+
+    .stack { display: grid; gap: 10px; width: 100%; margin-top: 8px; }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+      padding: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .topbar h2, .topbar h3 {
+      margin: 0;
+      font-size: 1.04rem;
+      color: var(--red);
+      font-weight: 900;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.8), 0 6px 14px rgba(0,0,0,0.08);
+    }
+
+    .chip {
+      font-size: 0.8rem;
+      color: #a81616;
+      background: #ffe9e8;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(229,57,53,0.16);
+      white-space: nowrap;
+    }
+
+    .search {
+      width: 100%;
+      border: 1px solid rgba(229,57,53,0.16);
+      background: #fff;
+      color: var(--text);
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-size: 0.98rem;
+      outline: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+    .search:focus { border-color: rgba(229,57,53,0.42); box-shadow: 0 0 0 4px rgba(229,57,53,0.10); }
+
+    .name-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+      max-height: 63vh;
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    .name-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(180deg, #fff, #fff7f7);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 18px;
+      padding: 10px 12px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      width: 100%;
+      text-align: left;
+    }
+    .name-card:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(0,0,0,0.12); }
+    .name-card.selected { border-color: rgba(229,57,53,0.50); box-shadow: 0 0 0 4px rgba(229,57,53,0.10), 0 12px 24px rgba(0,0,0,0.12); }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      flex: 0 0 auto;
+      background: linear-gradient(180deg, #fff, #ffecec);
+      border: 1px solid rgba(229,57,53,0.13);
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      color: var(--red);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+
+    .name-text {
+      font-size: 0.96rem;
+      line-height: 1.3;
+      font-weight: 800;
+      color: #88a11f;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.8), 0 5px 14px rgba(0,0,0,0.10);
+    }
+
+    .modal-backdrop, .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.40);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 20;
+      backdrop-filter: blur(5px);
+    }
+    .modal-backdrop.show, .overlay.show { display: flex; }
+
+    .modal {
+      width: min(100%, 420px);
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 28px 60px rgba(0,0,0,0.34);
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: 18px;
+      animation: popIn .24s ease both;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(14px) scale(.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal h3 { margin: 0 0 8px; color: #b91515; font-size: 1.14rem; }
+    .modal p { margin: 0 0 14px; color: #333; line-height: 1.5; }
+    .modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .quiz-shell {
+      position: relative;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,0.06);
+      min-height: calc(100vh - 32px);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.94)),
+        url('maktab.jpg') center/cover no-repeat;
+    }
+
+    .quiz-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.30);
+      backdrop-filter: blur(8px);
+    }
+
+    .quiz-inner {
+      position: relative;
+      z-index: 1;
+      padding: 16px 14px 18px;
+    }
+
+    .progress-wrap {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .progress-line {
+      width: 100%;
+      height: 12px;
+      background: rgba(0,0,0,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(229,57,53,0.16);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ff615d, #db2222);
+      border-radius: inherit;
+      transition: width .35s ease;
+    }
+
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      font-size: 0.88rem;
+      color: #444;
+    }
+
+    .quiz-card {
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 24px;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.14);
+      padding: 16px;
+      backdrop-filter: blur(8px);
+    }
+
+    .question-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .q-num {
+      font-weight: 900;
+      color: var(--red);
+      font-size: 0.95rem;
+      text-shadow: 0 1px 0 #fff, 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .q-topic {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #ffe9e8;
+      color: #9b1212;
+      font-size: 0.8rem;
+      border: 1px solid rgba(229,57,53,0.14);
+      white-space: nowrap;
+    }
+
+    .q-text {
+      margin: 0 0 14px;
+      font-size: 1.1rem;
+      line-height: 1.45;
+      font-weight: 800;
+      color: #202020;
+    }
+
+    .options { display: grid; gap: 10px; }
+
+    .option {
+      width: 100%;
+      border: 1px solid rgba(0,0,0,0.07);
+      background: linear-gradient(180deg, #fff, #fff7f7);
+      border-radius: 18px;
+      padding: 13px 14px;
+      text-align: left;
+      font-size: 0.98rem;
+      color: #222;
+      font-weight: 700;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+
+    .option:active { transform: scale(0.99); }
+    .option.correct {
+      border-color: rgba(27, 159, 66, 0.38);
+      box-shadow: 0 0 0 4px rgba(27,159,66,0.10), 0 10px 18px rgba(0,0,0,0.08);
+    }
+    .option.wrong {
+      border-color: rgba(221, 45, 45, 0.38);
+      box-shadow: 0 0 0 4px rgba(221,45,45,0.10), 0 10px 18px rgba(0,0,0,0.08);
+      animation: shake .28s ease;
+    }
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-4px); }
+      40% { transform: translateX(4px); }
+      60% { transform: translateX(-3px); }
+      80% { transform: translateX(3px); }
+      100% { transform: translateX(0); }
+    }
+
+    .quiz-footer {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .result-top {
+      display: grid;
+      gap: 12px;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .score-ring {
+      width: 126px;
+      height: 126px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: conic-gradient(var(--red) 0% 0%, #f3f3f3 0% 100%);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+      border: 6px solid #fff;
+    }
+
+    .score-ring .inner {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 1.26rem;
+      font-weight: 900;
+      color: var(--red);
+      text-shadow: 0 1px 0 #fff;
+    }
+
+    .big-result {
+      font-size: 1.35rem;
+      font-weight: 1000;
+      color: #c21d1d;
+      margin: 0;
+      text-shadow: 0 2px 0 rgba(255,255,255,0.8), 0 8px 16px rgba(0,0,0,0.10);
+    }
+
+    .small-muted { color: var(--muted); font-size: 0.95rem; margin: 0; }
+
+    .stat-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #fff, #fff7f7);
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+  .men{
+    box-shadow: 0 0 20px black;
+    border-radius: 50px;
+    .stat-item span:last-child { color: var(--red); }
+
+    .footer-author {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, #fff, #fff8f8);
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+    }
+
+    .author-photo {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      overflow: hidden;
+      flex: 0 0 auto;
+      border: 1px solid rgba(229,57,53,0.20);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.16);
+    }
+
+    .footer-author strong {
+      display: block;
+      color: var(--red);
+      font-size: 1.02rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.10);
+    }
+
+    .footer-author small { color: #666; }
+
+    .hidden { display: none !important; }
+
+    .icon-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tiny-note {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: #777;
+      text-align: center;
+    }
+
+    @media (min-width: 480px) {
+      .brand { font-size: 1.72rem; }
+      .subtitle { font-size: 1.02rem; }
+      .q-text { font-size: 1.16rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section id="screen-intro" class="screen active">
+      <div class="hero">
+        <div class="hero-inner">
+          <div class="logo-wrap" aria-label="Maktab logosi">
+            <img
+              src="Maktab.jpg"
+              alt="maktab logosi"
+              onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;display:grid;place-items:center;color:#e53935;font-weight:900;font-size:1.2rem;background:linear-gradient(180deg,#fff,#ffeaea)\'>M</div>'"
+            />
+          </div>
+          <h1 class="brand">2011-yillar uchun 8-sinf bilim sinovi</h1>
+          <p class="subtitle">Yozgi ta'tilda do‘stlaringiz 8-sinf mavzularini qay darajada yaxshi eslab qolganini tekshirish uchun mobil sayt.</p>
+          <div class="author-line">Tayyorladi<br><strong>Abilqosimov HOJIAKBAR</strong></div>
+          <div class="stack" style="margin-top:16px;">
+            <button id="startChoose" class="btn">Testni boshlash</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-name" class="screen hidden">
+      <div class="panel">
+        <div class="topbar">
+          <h2>1. Ismingizni tanlang</h2>
+          <div class="chip">17-maktab</div>
+        </div>
+        <input id="searchInput" class="search" type="search" placeholder="Ismingizni qidiring..." autocomplete="off" />
+        <div id="nameList" class="name-list"></div>
+        <div class="tiny-note">O‘z ismingizni bossangiz, tasdiqlash oynasi chiqadi.</div>
+      </div>
+    </section>
+
+    <section id="screen-quiz" class="screen hidden">
+      <div class="quiz-shell">
+        <div class="quiz-inner">
+          <div class="topbar" style="margin-bottom: 10px;">
+            <h3 class="icon-title">📝 Test sahifasi</h3>
+            <div class="chip" id="selectedNameChip">Tanlangan ism</div>
+          </div>
+
+          <div class="progress-wrap">
+            <div class="progress-text">
+              <span id="progressLabel">Savol 1/30</span>
+              <span id="topicLabel">Matematika</span>
+            </div>
+            <div class="progress-line"><div id="progressBar" class="progress-bar"></div></div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="question-head">
+              <div class="q-num" id="qNum">#1</div>
+              <div class="q-topic" id="qTopic">📚 Matematika</div>
+            </div>
+            <p class="q-text" id="questionText"></p>
+            <div id="options" class="options"></div>
+          </div>
+
+          <div class="quiz-footer">
+            <button id="nextBtn" class="btn hidden">Keyingi savol</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-result" class="screen hidden">
+      <div class="panel">
+        <div class="result-top">
+          <div class="score-ring" id="scoreRing"><div class="inner" id="scorePercent">0%</div></div>
+          <p class="big-result" id="resultTitle">Natija</p>
+          <p class="small-muted" id="resultSummary"></p>
+        </div>
+
+        <div class="stat-grid" id="statGrid"></div>
+
+        <div class="footer-author">
+          <div class="author-photo">
+            <img class="men"
+              src="Men.jpg"
+              alt="Abilqosimov Hojiakbar rasmi"
+              onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;display:grid;place-items:center;color:#e53935;font-weight:900;background:linear-gradient(180deg,#fff,#ffeaea)\'>A</div>'"
+            />
+          </div>
+          <div>
+            <strong>Tayyorladi: Abilqosimov HOJIAKBAR</strong>
+            <small>Mobil, oq-qizil dizayn • qora shadowlar</small>
+          </div>
+        </div>
+
+        <div class="stack" style="margin-top:14px;">
+          <button id="restartBtn" class="btn">Qayta boshlash</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="nameModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal">
+      <h3 id="modalTitle">Tasdiqlash</h3>
+      <p id="modalText">Siz aniq ...misiz?</p>
+      <div class="modal-actions">
+        <button id="modalBack" class="btn secondary">Orqaga</button>
+        <button id="modalYes" class="btn">Ha, davom etish</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="feedbackOverlay" class="overlay">
+    <div class="modal" style="max-width: 300px; text-align:center;">
+      <div id="feedbackIcon" style="font-size: 2.3rem; margin-bottom: 6px;">✓</div>
+      <h3 id="feedbackTitle" style="margin-bottom: 6px;">To‘g‘ri!</h3>
+      <p id="feedbackText" style="margin-bottom: 0;">Keyingisiga o‘tamiz.</p>
+    </div>
+  </div>
+
+  <script>
+    const names = [
+      "Abduljalolova Xadicha Alisher qizi",
+      "Abdulxakimov Marufjon Fazliddin",
+      "Abdulaliqov Xosilbek Xasan o'g'li",
+      "Abdulxoliqova Fotima Baxodir qizi",
+      "Abdulxoliqova Zuxra Baxodir qizi",
+      "Abilqosimov Xojiakbar Rustam o'g'li",
+      "Axmatov Jasur Ubaydulla o'g'li",
+      "Begbo'tayev Sardor Anvar o'g'li",
+      "Berdibayev Ayubjon Shoxrux",
+      "G'afurov Bahtiyor Abdumovlon O'g'li",
+      "Ismailov Samadbek Nasirdin o'g'li",
+      "Mamanazarova Mushtariy Mamanazar qizi",
+      "Nuraliyev Sunatillo Botir o'g'li",
+      "O'Imasov Saloxiddin Xusan o'g'li",
+      "Qarshiboev Bunyodbek Xusan o'g'li",
+      "Raxmatullayev Dilshodbek Sherali o'g'li",
+      "Uralova Aziza Zoxidjon qizi",
+      "Uralova Ezoza Xasan qizi",
+      "Uraqbayeva Muqaddas Rustam qizi",
+      "Urazboyeva Kumush Sherzod qizi",
+      "Xamdamova Farangiz Ilxom qizi",
+      "Xazratov Sayidbek Begaliyevich"
+    ];
+
+    const questions = [
+      { topic: "Matematika", q: "2x + 6 = 14 tenglamaning yechimi nechaga teng?", a: ["2","3","4","5"], c: 2 },
+      { topic: "Matematika", q: "Kvadratning perimetri qaysi formula bilan topiladi?", a: ["a²","2a","4a","a³"], c: 2 },
+      { topic: "Matematika", q: "81 sonining kvadrat ildizi nechaga teng?", a: ["8","9","10","12"], c: 1 },
+
+      { topic: "Informatika", q: "Kompyuterning asosiy hisoblash qismi nima?", a: ["Monitor","Klaviatura","Protsessor","Sichqoncha"], c: 2 },
+      { topic: "Informatika", q: "Internet sahifalarini ochish uchun qaysi dastur ishlatiladi?", a: ["Brauzer","Printer","Arxivator","Kalkulyator"], c: 0 },
+      { topic: "Informatika", q: "1 bayt nechta bitdan iborat?", a: ["4","8","16","32"], c: 1 },
+
+      { topic: "Fizika", q: "Tezlikning SI birligi qaysi?", a: ["km","kg","m/s","N"], c: 2 },
+      { topic: "Fizika", q: "Yerning tortish kuchi qanday ataladi?", a: ["Ishqalanish","Gravitatsiya","Bosim","Quvvat"], c: 1 },
+      { topic: "Fizika", q: "Energiya birligi nima?", a: ["Nyuton","Joule","Volt","Amper"], c: 1 },
+
+      { topic: "Kimyo", q: "Suvning kimyoviy formulasi qaysi?", a: ["CO₂","O₂","H₂O","NaCl"], c: 2 },
+      { topic: "Kimyo", q: "Osh tuzining formulasi qaysi?", a: ["NaCl","H₂O","CO₂","HCl"], c: 0 },
+      { topic: "Kimyo", q: "Kislorodning kimyoviy belgisi qaysi?", a: ["K","O","H","C"], c: 1 },
+
+      { topic: "Biologiya", q: "Fotosintez qayerda sodir bo‘ladi?", a: ["Ildizda","Bargda","Poyada","Gulda"], c: 1 },
+      { topic: "Biologiya", q: "Inson yuragi nechta kameradan iborat?", a: ["2","3","4","5"], c: 2 },
+      { topic: "Biologiya", q: "Qon organizmda asosan nimani tashiydi?", a: ["Kislorod","Tuproq","Yog‘och","Shisha"], c: 0 },
+
+      { topic: "Tarix", q: "Amir Temur asosan qaysi asrda yashagan?", a: ["XIII","XIV","XV","XVI"], c: 1 },
+      { topic: "Tarix", q: "O‘zbekiston mustaqilligi qachon e'lon qilingan?", a: ["1990","1991","1992","1993"], c: 1 },
+      { topic: "Tarix", q: "Buyuk Ipak yo‘li asosan nimaga xizmat qilgan?", a: ["Savdoga","Sportga","Musiqaga","Ovchilikka"], c: 0 },
+
+      { topic: "Geografiya", q: "Yer yuzidagi eng katta okean qaysi?", a: ["Atlantika","Hind","Shimoliy Muz","Tinch okeani"], c: 3 },
+      { topic: "Geografiya", q: "O‘zbekiston poytaxti qaysi?", a: ["Samarqand","Buxoro","Toshkent","Xiva"], c: 2 },
+      { topic: "Geografiya", q: "Yer nechta qit'adan iborat?", a: ["5","6","7","8"], c: 2 },
+
+      { topic: "Ona tili", q: "Ot nimani bildiradi?", a: ["Belgini","Harakatni","Predmet yoki shaxsni","Sonni"], c: 2 },
+      { topic: "Ona tili", q: "Fe'l nimani bildiradi?", a: ["Harakatni","Rangni","Belgini","Sonni"], c: 0 },
+      { topic: "Ona tili", q: "Gap oxirida ko‘pincha nima qo‘yiladi?", a: ["Vergul","Nuqta","Ikki nuqta","Tire"], c: 1 },
+
+      { topic: "Adabiyot", q: "Ertaklar qaysi janrga kiradi?", a: ["Xalq og‘zaki ijodi","Ilmiy maqola","Hujjat","Qonun"], c: 0 },
+      { topic: "Adabiyot", q: "She'r yozadigan ijodkor qanday ataladi?", a: ["Shoir","Muhandis","Shifokor","Sportchi"], c: 0 },
+      { topic: "Adabiyot", q: "Maqol nima?", a: ["Qisqa hikmatli gap","Roman","Darslik","Xarita"], c: 0 },
+
+      { topic: "Ingliz tili", q: "\"Book\" so‘zining ma'nosi nima?", a: ["Ruchka","Kitob","Daftar","Sumka"], c: 1 },
+      { topic: "Ingliz tili", q: "\"Good morning\" tarjimasi nima?", a: ["Xayrli tong","Xayrli tun","Salom","Rahmat"], c: 0 },
+      { topic: "Ingliz tili", q: "\"Apple\" so‘zi nimani anglatadi?", a: ["Banan","Apelsin","Olma","Uzum"], c: 2 }
+    ];
+
+    const screens = {
+      intro: document.getElementById('screen-intro'),
+      name: document.getElementById('screen-name'),
+      quiz: document.getElementById('screen-quiz'),
+      result: document.getElementById('screen-result')
+    };
+
+    const startChoose = document.getElementById('startChoose');
+    const searchInput = document.getElementById('searchInput');
+    const nameList = document.getElementById('nameList');
+    const nameModal = document.getElementById('nameModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const modalBack = document.getElementById('modalBack');
+    const modalYes = document.getElementById('modalYes');
+    const selectedNameChip = document.getElementById('selectedNameChip');
+
+    const qNum = document.getElementById('qNum');
+    const qTopic = document.getElementById('qTopic');
+    const progressLabel = document.getElementById('progressLabel');
+    const topicLabel = document.getElementById('topicLabel');
+    const progressBar = document.getElementById('progressBar');
+    const questionText = document.getElementById('questionText');
+    const options = document.getElementById('options');
+    const nextBtn = document.getElementById('nextBtn');
+
+    const scoreRing = document.getElementById('scoreRing');
+    const scorePercent = document.getElementById('scorePercent');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultSummary = document.getElementById('resultSummary');
+    const statGrid = document.getElementById('statGrid');
+    const restartBtn = document.getElementById('restartBtn');
+
+    const feedbackOverlay = document.getElementById('feedbackOverlay');
+    const feedbackIcon = document.getElementById('feedbackIcon');
+    const feedbackTitle = document.getElementById('feedbackTitle');
+    const feedbackText = document.getElementById('feedbackText');
+
+    let filteredNames = [...names];
+    let chosenName = "";
+    let selectedNameIndex = -1;
+    let currentQ = 0;
+    let score = 0;
+    let locked = false;
+    let answers = [];
+
+    function showScreen(screenName) {
+      Object.values(screens).forEach(s => s.classList.add('hidden'));
+      screens[screenName].classList.remove('hidden');
+      screens[screenName].classList.add('active');
+      Object.entries(screens).forEach(([k, el]) => {
+        if (k !== screenName) el.classList.remove('active');
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderNames(list) {
+      nameList.innerHTML = '';
+      list.forEach((name, idx) => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'name-card';
+        card.innerHTML = `
+          <div class="avatar">${name.trim().charAt(0).toUpperCase()}</div>
+          <div class="name-text">${name}</div>
+        `;
+        card.addEventListener('click', () => openConfirm(name, idx));
+        nameList.appendChild(card);
+      });
+
+      if (list.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'panel';
+        empty.style.textAlign = 'center';
+        empty.innerHTML = '<strong style="color:#b91c1c">Natija topilmadi</strong><div style="color:#666;margin-top:6px">Iltimos, ismingizni boshqacha yozib qidiring.</div>';
+        nameList.appendChild(empty);
+      }
+    }
+
+    function openConfirm(name, idx) {
+      chosenName = name;
+      selectedNameIndex = idx;
+      modalTitle.textContent = 'Tasdiqlash';
+      const short = name.split(' ')[0];
+      modalText.textContent = `Siz aniq “${short}”misiz?`;
+      nameModal.classList.add('show');
+      nameModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeConfirm() {
+      nameModal.classList.remove('show');
+      nameModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function renderQuestion() {
+      locked = false;
+      nextBtn.classList.add('hidden');
+      const q = questions[currentQ];
+      qNum.textContent = `#${currentQ + 1}`;
+      qTopic.textContent = `📚 ${q.topic}`;
+      progressLabel.textContent = `Savol ${currentQ + 1}/30`;
+      topicLabel.textContent = q.topic;
+      questionText.textContent = q.q;
+      progressBar.style.width = `${(currentQ / questions.length) * 100}%`;
+      options.innerHTML = '';
+
+      q.a.forEach((ans, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'option';
+        btn.textContent = `${String.fromCharCode(65 + idx)}) ${ans}`;
+        btn.addEventListener('click', () => chooseAnswer(idx, btn));
+        options.appendChild(btn);
+      });
+    }
+
+    function showFeedback(ok) {
+      feedbackIcon.textContent = ok ? '✓' : '✕';
+      feedbackTitle.textContent = ok ? 'To‘g‘ri!' : 'Noto‘g‘ri!';
+      feedbackText.textContent = ok ? 'Ajoyib, keyingisiga o‘tamiz.' : 'Yaxshi, keyingi savolga o‘tamiz.';
+      feedbackOverlay.classList.add('show');
+      setTimeout(() => feedbackOverlay.classList.remove('show'), 650);
+    }
+
+    function chooseAnswer(index, button) {
+      if (locked) return;
+      locked = true;
+      const q = questions[currentQ];
+      const allButtons = [...options.querySelectorAll('.option')];
+      const correctBtn = allButtons[q.c];
+      const isCorrect = index === q.c;
+
+      answers.push({ topic: q.topic, correct: isCorrect });
+
+      if (isCorrect) {
+        score += 1;
+        button.classList.add('correct');
+        showFeedback(true);
+      } else {
+        button.classList.add('wrong');
+        correctBtn.classList.add('correct');
+        showFeedback(false);
+      }
+
+      allButtons.forEach(b => b.disabled = true);
+      nextBtn.classList.remove('hidden');
+    }
+
+    function goNext() {
+      currentQ += 1;
+      if (currentQ < questions.length) {
+        renderQuestion();
+        progressBar.style.width = `${(currentQ / questions.length) * 100}%`;
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      showScreen('result');
+      const percent = Math.round((score / questions.length) * 100);
+      scorePercent.textContent = `${percent}%`;
+      scoreRing.style.background = `conic-gradient(var(--red) ${percent}%, #f3f3f3 0%)`;
+
+      let title = 'Takrorlash kerak';
+      if (percent >= 90) title = '8-sinf Ustasi';
+      else if (percent >= 75) title = 'Kuchli O‘quvchi';
+      else if (percent >= 60) title = 'Yaxshi';
+      else if (percent >= 40) title = 'O‘rtacha';
+      resultTitle.textContent = title;
+      resultSummary.textContent = `${chosenName} uchun umumiy natija: ${score}/30 savol.`;
+
+      const byTopic = {};
+      questions.forEach((q, i) => {
+        if (!byTopic[q.topic]) byTopic[q.topic] = { total: 0, correct: 0 };
+        byTopic[q.topic].total += 1;
+        if (answers[i] && answers[i].correct) byTopic[q.topic].correct += 1;
+      });
+
+      statGrid.innerHTML = '';
+      Object.keys(byTopic).forEach(topic => {
+        const item = document.createElement('div');
+        item.className = 'stat-item';
+        item.innerHTML = `<span>${topic}</span><span>${byTopic[topic].correct}/${byTopic[topic].total}</span>`;
+        statGrid.appendChild(item);
+      });
+
+      progressBar.style.width = '100%';
+    }
+
+    function resetAll() {
+      chosenName = '';
+      selectedNameIndex = -1;
+      currentQ = 0;
+      score = 0;
+      locked = false;
+      answers = [];
+      searchInput.value = '';
+      filteredNames = [...names];
+      renderNames(filteredNames);
+      showScreen('intro');
+    }
+
+    startChoose.addEventListener('click', () => {
+      showScreen('name');
+      renderNames(names);
+    });
+
+    searchInput.addEventListener('input', () => {
+      const term = searchInput.value.trim().toLowerCase();
+      filteredNames = names.filter(n => n.toLowerCase().includes(term));
+      renderNames(filteredNames);
+    });
+
+    modalBack.addEventListener('click', closeConfirm);
+    modalYes.addEventListener('click', () => {
+      closeConfirm();
+      selectedNameChip.textContent = chosenName;
+      showScreen('quiz');
+      currentQ = 0;
+      score = 0;
+      answers = [];
+      renderQuestion();
+    });
+
+    nextBtn.addEventListener('click', goNext);
+    restartBtn.addEventListener('click', resetAll);
+
+    nameModal.addEventListener('click', (e) => {
+      if (e.target === nameModal) closeConfirm();
+    });
+
+    renderNames(names);
+  </script>
+</body>
+</html>
